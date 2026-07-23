@@ -1402,7 +1402,7 @@
 
             const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
 
-            // Check if user has provided a custom Gemini API Key
+            // Option 1: Custom Gemini Cloud API Key if provided by user
             if (geminiApiKey && geminiApiKey.trim().length > 10) {
                 try {
                     const systemPrompt = "Você é um consultor financeiro pessoal especialista e motivador. Responda em português com formatação limpa e clara usando tópicos, em no máximo 4 parágrafos pequenos. Dê conselhos práticos de economia, analise se o usuário está gastando bem, mencione o balanço e sugira um plano de ação simples.";
@@ -1419,7 +1419,7 @@ Por favor dê um diagnóstico com 3 pontos chave:
 2. Onde tentar economizar no próximo mês
 3. Dica rápida para investimentos/aportes.`;
 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`;
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
                     const payload = {
                         contents: [{ parts: [{ text: userQuery }] }],
                         systemInstruction: { parts: [{ text: systemPrompt }] }
@@ -1441,8 +1441,8 @@ Por favor dê um diagnóstico com 3 pontos chave:
                                 .replace(/\n/g, '<br>');
 
                             document.getElementById('aiContentArea').innerHTML = `
-                                <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl mb-3 text-purple-200 flex items-center gap-2">
-                                    <i class="fa-solid fa-sparkles text-purple-400"></i>
+                                <div class="p-3.5 bg-purple-500/10 border border-purple-500/30 rounded-xl mb-3 text-purple-200 flex items-center gap-2 text-xs">
+                                    <i class="fa-solid fa-sparkles text-purple-400 text-sm"></i>
                                     <span><strong>Diagnóstico ao Vivo com Gemini Cloud IA</strong> (${currentMonthStr})</span>
                                 </div>
                                 ${formattedHtml}
@@ -1453,12 +1453,12 @@ Por favor dê um diagnóstico com 3 pontos chave:
                         }
                     }
                 } catch(err) {
-                    console.log("Fallback para assistente de IA interno inteligente.");
+                    console.log("Fallback para o assistente de IA interno.");
                 }
             }
 
-            // Built-in Intelligent Financial Assistant (Instant & Reliable Fallback)
-            await new Promise(r => setTimeout(r, 600));
+            // Option 2: Built-in Intelligent Financial Assistant (Instant, local & 100% reliable on GitHub Pages)
+            await new Promise(r => setTimeout(r, 500));
 
             let healthScore = 100;
             let statusBadgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
@@ -1499,34 +1499,34 @@ Por favor dê um diagnóstico com 3 pontos chave:
 
                 <div class="space-y-3">
                     <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
-                        <h4 class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+                        <h4 class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5 text-xs">
                             <i class="fa-solid fa-chart-line"></i> 1. Diagnóstico do Fluxo de Caixa (${currentMonthStr})
                         </h4>
-                        <p class="text-slate-300">
+                        <p class="text-slate-300 text-xs">
                             Você acumulou <strong>${formatCurrency(totalIncome)}</strong> em entradas e <strong>${formatCurrency(totalExpense)}</strong> em despesas.
                             ${balance >= 0 
                                 ? `Seu saldo positivo é de <strong class="text-emerald-400">${formatCurrency(balance)}</strong>, representando uma sobra bruta de <strong>${marginPct.toFixed(1)}%</strong> sobre sua receita.`
-                                : `Suas despesas superaram as receitas em <strong class="text-rose-400">${formatCurrency(Math.abs(balance))}</strong> neste período. É hora de estancar pequenos vazamentos!`
+                                : `Suas despesas superaram as receitas em <strong class="text-rose-400">${formatCurrency(Math.abs(balance))}</strong> neste período. É hora de reavaliar gastos e estancar pequenos vazamentos!`
                             }
                         </p>
                     </div>
 
                     ${topCategory ? `
                     <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
-                        <h4 class="font-bold text-cyan-400 mb-1 flex items-center gap-1.5">
+                        <h4 class="font-bold text-cyan-400 mb-1 flex items-center gap-1.5 text-xs">
                             <i class="fa-solid fa-bullseye"></i> 2. Análise de Categoria Principal
                         </h4>
-                        <p class="text-slate-300">
+                        <p class="text-slate-300 text-xs">
                             Seu maior gasto no mês foi com <strong>${topCategory[0]}</strong>, totalizando <strong>${formatCurrency(topCategory[1])}</strong> 
                             (${((topCategory[1] / (totalExpense || 1)) * 100).toFixed(1)}% de todas as despesas). Reavalie compras não essenciais nesta categoria.
                         </p>
                     </div>` : ''}
 
                     <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
-                        <h4 class="font-bold text-purple-400 mb-1 flex items-center gap-1.5">
+                        <h4 class="font-bold text-purple-400 mb-1 flex items-center gap-1.5 text-xs">
                             <i class="fa-solid fa-piggy-bank"></i> 3. Recomendações & Meta de Aporte (Regra "Primeiro Eu")
                         </h4>
-                        <p class="text-slate-300">
+                        <p class="text-slate-300 text-xs">
                             ${investmentSettings.enabled 
                                 ? `Sua meta é separar <strong>${investmentSettings.targetPct}%</strong> (${formatCurrency(totalIncome * (investmentSettings.targetPct / 100))}) para investimentos. ${balance >= totalIncome * (investmentSettings.targetPct / 100) ? 'Parabéns! Seu saldo atual cobre integralmente a meta do seu eu do futuro.' : 'Tente ajustar gastos de lazer nos próximos dias para completar o aporte planejado.'}`
                                 : 'Defina uma meta de investimento sobre receitas na aba Configurações para acelerar sua independência financeira.'
