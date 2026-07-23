@@ -145,7 +145,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="text-lg font-bold tracking-tight text-white">FinanPro</h1>
-                            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 uppercase tracking-wider">AI Ultra 4.0</span>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 uppercase tracking-wider">AI Ultra 4.5</span>
                         </div>
                         <p class="text-[11px] text-slate-400 hidden sm:block">Gestão Financeira Inteligente & Alta Performance</p>
                     </div>
@@ -153,7 +153,6 @@
 
                 <!-- Month Selector, Theme Toggle & Controls -->
                 <div class="flex items-center space-x-3">
-                    <!-- Alternador de Tema -->
                     <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700/80" title="Alternar Tema Claro/Escuro">
                         <i class="fa-solid fa-moon text-xs" id="themeIcon"></i>
                     </button>
@@ -170,7 +169,6 @@
                         </button>
                     </div>
 
-                    <!-- Botão de Instalação do PWA (App) -->
                     <button id="pwaInstallBtn" onclick="installPWA()" class="hidden bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
                         <i class="fa-solid fa-download text-xs animate-bounce"></i>
                         <span class="hidden sm:inline">Instalar App</span>
@@ -284,7 +282,7 @@
                     <i class="fa-solid fa-rocket"></i> Metas & Simulador
                 </button>
                 <button id="tabSettingsBtn" onclick="switchTab('settings')" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-gear"></i> Configurações
+                    <i class="fa-solid fa-gear"></i> Configurações & IA
                 </button>
             </div>
 
@@ -295,8 +293,8 @@
                     <input type="text" id="searchInput" oninput="renderTable()" placeholder="Buscar lançamento..." class="w-full sm:w-44 pl-8 pr-3 py-1.5 text-xs bg-slate-900/90 border border-slate-700/80 rounded-xl focus:outline-none focus:border-emerald-500 text-slate-200 transition">
                 </div>
                 
-                <button onclick="runAiAnalysis()" class="px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 rounded-xl transition shadow-lg flex items-center gap-1.5" title="Gerar Diagnóstico Inteligente com Gemini IA">
-                    <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+                <button onclick="runAiAnalysis()" class="px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 rounded-xl transition shadow-lg flex items-center gap-1.5" title="Gerar Diagnóstico Inteligente com IA">
+                    <i class="fa-solid fa-wand-magic-sparkles animate-pulse text-amber-300"></i>
                     <span class="hidden sm:inline">Analisar com IA</span>
                 </button>
 
@@ -375,7 +373,6 @@
                         </tr>
                     </thead>
                     <tbody id="transactionTableBody" class="divide-y divide-slate-800/60 text-xs text-slate-300">
-                        <!-- Dynamic Rows loaded via Javascript -->
                     </tbody>
                 </table>
             </div>
@@ -440,7 +437,6 @@
                     <i class="fa-solid fa-layer-group text-cyan-400"></i> Detalhamento de Impacto Financeiro no Mês
                 </h3>
                 <div id="categoryBreakdownList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    <!-- Dinamicamente preenchido -->
                 </div>
             </div>
         </section>
@@ -464,15 +460,12 @@
                     </div>
                 </div>
 
-                <!-- Budget Cards Grid -->
                 <div id="budgetsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Dynamic budget cards -->
                 </div>
             </div>
         </section>
 
         <section id="tabGoals" class="hidden space-y-6">
-            <!-- Goals Section -->
             <div class="glass-card p-6 rounded-2xl border border-slate-800">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
@@ -487,7 +480,6 @@
                 </div>
 
                 <div id="goalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Dynamic Goals loaded here -->
                 </div>
             </div>
 
@@ -571,6 +563,23 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gemini API Key Settings -->
+                <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-key text-purple-400"></i> Chave de API do Gemini IA (Opcional)
+                    </h3>
+                    <p class="text-xs text-slate-400">O FinanPro já possui uma IA interna pronta. Se desejar usar sua própria chave de API da Google para respostas personalizadas da nuvem, cole-a abaixo:</p>
+
+                    <div class="space-y-3 pt-1">
+                        <div>
+                            <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-purple-500">
+                        </div>
+                        <button onclick="saveGeminiApiKey()" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Chave da API
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Configuração de Dízimos e Ofertas -->
                 <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -602,7 +611,7 @@
                         </div>
 
                         <button onclick="saveTitheSettingsFromUI()" class="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-floppy-disk"></i> Salvar Preferências de Dízimo
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Preferências
                         </button>
                     </div>
                 </div>
@@ -627,7 +636,7 @@
                         </div>
 
                         <button onclick="saveInvestmentSettingsFromUI()" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-floppy-disk"></i> Salvar Meta de Investimento
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Meta
                         </button>
                     </div>
                 </div>
@@ -639,16 +648,15 @@
                     </h3>
                     <p class="text-xs text-slate-400">Gerencie onde seu dinheiro está alocado.</p>
                     <div class="flex gap-2">
-                        <input type="text" id="newAccountInput" placeholder="Ex: C6 Bank, XP Investimentos..." class="flex-1 px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-cyan-500">
+                        <input type="text" id="newAccountInput" placeholder="Ex: C6 Bank, XP..." class="flex-1 px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-cyan-500">
                         <button onclick="addCustomAccount()" class="px-3 py-2 bg-cyan-500 text-slate-950 font-bold text-xs rounded-xl hover:bg-cyan-400">Adicionar</button>
                     </div>
                     <div id="accountsList" class="flex flex-wrap gap-2 pt-2">
-                        <!-- Dynamic accounts chips -->
                     </div>
                 </div>
 
                 <!-- Backup and Data Management -->
-                <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 lg:col-span-3">
+                <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 lg:col-span-2">
                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
                         <i class="fa-solid fa-database text-amber-400"></i> Gerenciamento de Dados & Backup
                     </h3>
@@ -807,7 +815,7 @@
         </div>
     </div>
 
-    <!-- MODAL: AI FINANCIAL ANALYSIS (GEMINI 3 FLASH) -->
+    <!-- MODAL: AI FINANCIAL ANALYSIS (GEMINI IA & INTERNAL ASSISTANT) -->
     <div id="aiAnalysisModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-purple-500/30 my-auto text-slate-100 p-6 space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -817,7 +825,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-bold text-white">Análise Financeira Inteligente (Gemini IA)</h3>
-                        <p class="text-[11px] text-slate-400">Diagnóstico inteligente do seu mês financeiro</p>
+                        <p class="text-[11px] text-slate-400">Diagnóstico pessoal e conselhos acionáveis do seu mês</p>
                     </div>
                 </div>
                 <button onclick="closeAiModal()" class="text-slate-400 hover:text-white p-1">
@@ -828,11 +836,10 @@
             <!-- AI Output Area -->
             <div id="aiLoadingArea" class="py-12 flex flex-col items-center justify-center text-center space-y-3">
                 <div class="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-xs font-bold text-purple-300">Analisando suas receitas, despesas e metas com IA...</p>
+                <p class="text-xs font-bold text-purple-300">Analisando suas receitas, despesas, margem e metas com IA...</p>
             </div>
 
             <div id="aiContentArea" class="hidden text-xs text-slate-200 leading-relaxed space-y-3 max-h-[60vh] overflow-y-auto pr-1">
-                <!-- AI Generated Text inserted dynamically -->
             </div>
 
             <div class="pt-3 border-t border-slate-800 flex justify-end">
@@ -1202,6 +1209,8 @@
             targetPct: 20
         };
 
+        let geminiApiKey = "";
+
         let isLightTheme = false;
         let currentMonthStr = "";
         let cashFlowChartInstance = null;
@@ -1264,8 +1273,14 @@
             const savedTithe = localStorage.getItem('finanpro_v3_tithe');
             const savedInvestment = localStorage.getItem('finanpro_v3_investment');
             const savedTheme = localStorage.getItem('finanpro_v4_theme');
+            const savedApiKey = localStorage.getItem('finanpro_gemini_key');
 
             if (savedTheme === 'light') toggleTheme();
+            if (savedApiKey) {
+                geminiApiKey = savedApiKey;
+                const apiKeyInput = document.getElementById('geminiApiKeyInput');
+                if (apiKeyInput) apiKeyInput.value = savedApiKey;
+            }
 
             if (savedTrans) {
                 try { transactions = JSON.parse(savedTrans); } catch(e) { transactions = [...sampleData]; }
@@ -1291,6 +1306,15 @@
             localStorage.setItem('finanpro_v3_inc_categories', JSON.stringify(incomeCategories));
             localStorage.setItem('finanpro_v3_tithe', JSON.stringify(titheSettings));
             localStorage.setItem('finanpro_v3_investment', JSON.stringify(investmentSettings));
+        }
+
+        function saveGeminiApiKey() {
+            const input = document.getElementById('geminiApiKeyInput');
+            if (input) {
+                geminiApiKey = input.value.trim();
+                localStorage.setItem('finanpro_gemini_key', geminiApiKey);
+                showToast("Chave da API Gemini salva!");
+            }
         }
 
         function updateApp() {
@@ -1376,8 +1400,13 @@
                 catTotals[t.category] = (catTotals[t.category] || 0) + Number(t.amount);
             });
 
-            const systemPrompt = "Você é um consultor financeiro pessoal especialista e motivador. Responda em português com formatação limpa e clara usando tópicos, em no máximo 4 parágrafos pequenos. Dê conselhos práticos de economia, analise se o usuário está gastando bem, mencione o balanço e sugira um plano de ação simples.";
-            const userQuery = `Analise minhas finanças do mês ${currentMonthStr}:
+            const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+
+            // Check if user has provided a custom Gemini API Key
+            if (geminiApiKey && geminiApiKey.trim().length > 10) {
+                try {
+                    const systemPrompt = "Você é um consultor financeiro pessoal especialista e motivador. Responda em português com formatação limpa e clara usando tópicos, em no máximo 4 parágrafos pequenos. Dê conselhos práticos de economia, analise se o usuário está gastando bem, mencione o balanço e sugira um plano de ação simples.";
+                    const userQuery = `Analise minhas finanças do mês ${currentMonthStr}:
 - Total de Receitas: R$ ${totalIncome.toFixed(2)}
 - Total de Despesas: R$ ${totalExpense.toFixed(2)}
 - Saldo Líquido: R$ ${balance.toFixed(2)}
@@ -1390,62 +1419,126 @@ Por favor dê um diagnóstico com 3 pontos chave:
 2. Onde tentar economizar no próximo mês
 3. Dica rápida para investimentos/aportes.`;
 
-            try {
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`;
+                    const payload = {
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    };
 
-                const payload = {
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] }
-                };
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
 
-                let response;
-                let retries = 3;
-                let delay = 1000;
+                    if (response.ok) {
+                        const result = await response.json();
+                        const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (text) {
+                            const formattedHtml = text
+                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                .replace(/\n\n/g, '<br><br>')
+                                .replace(/\n/g, '<br>');
 
-                while (retries > 0) {
-                    try {
-                        response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (response.ok) break;
-                    } catch (e) {}
-                    retries--;
-                    if (retries > 0) {
-                        await new Promise(r => setTimeout(r, delay));
-                        delay *= 2;
+                            document.getElementById('aiContentArea').innerHTML = `
+                                <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl mb-3 text-purple-200 flex items-center gap-2">
+                                    <i class="fa-solid fa-sparkles text-purple-400"></i>
+                                    <span><strong>Diagnóstico ao Vivo com Gemini Cloud IA</strong> (${currentMonthStr})</span>
+                                </div>
+                                ${formattedHtml}
+                            `;
+                            document.getElementById('aiLoadingArea').classList.add('hidden');
+                            document.getElementById('aiContentArea').classList.remove('hidden');
+                            return;
+                        }
                     }
+                } catch(err) {
+                    console.log("Fallback para assistente de IA interno inteligente.");
                 }
-
-                if (!response || !response.ok) throw new Error("Erro na requisição da IA");
-
-                const result = await response.json();
-                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Não foi possível gerar a análise.";
-
-                const formattedHtml = text
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\n\n/g, '<br><br>')
-                    .replace(/\n/g, '<br>');
-
-                document.getElementById('aiContentArea').innerHTML = `
-                    <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl mb-3 text-purple-200">
-                        <i class="fa-solid fa-sparkles text-purple-400 mr-2"></i> Diagnóstico Pessoal para ${currentMonthStr}
-                    </div>
-                    ${formattedHtml}
-                `;
-            } catch (err) {
-                document.getElementById('aiContentArea').innerHTML = `
-                    <div class="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-300">
-                        <p class="font-bold mb-1">Não foi possível conectar com o assistente de IA no momento.</p>
-                        <p class="text-[11px]">Verifique sua conexão ou tente novamente em alguns segundos.</p>
-                    </div>
-                `;
-            } finally {
-                document.getElementById('aiLoadingArea').classList.add('hidden');
-                document.getElementById('aiContentArea').classList.remove('hidden');
             }
+
+            // Built-in Intelligent Financial Assistant (Instant & Reliable Fallback)
+            await new Promise(r => setTimeout(r, 600));
+
+            let healthScore = 100;
+            let statusBadgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+            let statusTitle = "Excelente Saúde Financeira 🏆";
+
+            const marginPct = totalIncome > 0 ? (balance / totalIncome) * 100 : 0;
+            const topCategory = sortedCats.length > 0 ? sortedCats[0] : null;
+
+            if (totalIncome === 0 && totalExpense === 0) {
+                healthScore = 50;
+                statusTitle = "Aguardando Registros 📊";
+                statusBadgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+            } else if (balance < 0) {
+                healthScore = Math.max(10, 50 + Math.round(marginPct));
+                statusTitle = "Alerta de Déficit no Mês ⚠️";
+                statusBadgeClass = "bg-rose-500/20 text-rose-400 border-rose-500/30";
+            } else if (marginPct < 15) {
+                healthScore = 70;
+                statusTitle = "Atenção com Margem Apertada 🟡";
+                statusBadgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+            }
+
+            let adviceHtml = `
+                <div class="p-3.5 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 font-extrabold flex items-center justify-center text-sm border border-purple-500/30">
+                            ${healthScore}
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Score de Saúde Financeira</span>
+                            <p class="text-xs font-bold text-white">${statusTitle}</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 text-[10px] font-bold rounded-full border ${statusBadgeClass}">
+                        ${marginPct.toFixed(1)}% Margem
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
+                        <h4 class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-line"></i> 1. Diagnóstico do Fluxo de Caixa (${currentMonthStr})
+                        </h4>
+                        <p class="text-slate-300">
+                            Você acumulou <strong>${formatCurrency(totalIncome)}</strong> em entradas e <strong>${formatCurrency(totalExpense)}</strong> em despesas.
+                            ${balance >= 0 
+                                ? `Seu saldo positivo é de <strong class="text-emerald-400">${formatCurrency(balance)}</strong>, representando uma sobra bruta de <strong>${marginPct.toFixed(1)}%</strong> sobre sua receita.`
+                                : `Suas despesas superaram as receitas em <strong class="text-rose-400">${formatCurrency(Math.abs(balance))}</strong> neste período. É hora de estancar pequenos vazamentos!`
+                            }
+                        </p>
+                    </div>
+
+                    ${topCategory ? `
+                    <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
+                        <h4 class="font-bold text-cyan-400 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bullseye"></i> 2. Análise de Categoria Principal
+                        </h4>
+                        <p class="text-slate-300">
+                            Seu maior gasto no mês foi com <strong>${topCategory[0]}</strong>, totalizando <strong>${formatCurrency(topCategory[1])}</strong> 
+                            (${((topCategory[1] / (totalExpense || 1)) * 100).toFixed(1)}% de todas as despesas). Reavalie compras não essenciais nesta categoria.
+                        </p>
+                    </div>` : ''}
+
+                    <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
+                        <h4 class="font-bold text-purple-400 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-piggy-bank"></i> 3. Recomendações & Meta de Aporte (Regra "Primeiro Eu")
+                        </h4>
+                        <p class="text-slate-300">
+                            ${investmentSettings.enabled 
+                                ? `Sua meta é separar <strong>${investmentSettings.targetPct}%</strong> (${formatCurrency(totalIncome * (investmentSettings.targetPct / 100))}) para investimentos. ${balance >= totalIncome * (investmentSettings.targetPct / 100) ? 'Parabéns! Seu saldo atual cobre integralmente a meta do seu eu do futuro.' : 'Tente ajustar gastos de lazer nos próximos dias para completar o aporte planejado.'}`
+                                : 'Defina uma meta de investimento sobre receitas na aba Configurações para acelerar sua independência financeira.'
+                            }
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('aiContentArea').innerHTML = adviceHtml;
+            document.getElementById('aiLoadingArea').classList.add('hidden');
+            document.getElementById('aiContentArea').classList.remove('hidden');
         }
 
         function closeAiModal() {
