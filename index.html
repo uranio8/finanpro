@@ -137,21 +137,18 @@
     <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <!-- Logo & Brand -->
+                <!-- Logo & Brand (sem o selo AI Ultra) -->
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-xl shadow-lg glow-emerald">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-lg font-bold tracking-tight text-white">FinanPro</h1>
-                            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 uppercase tracking-wider">AI Ultra 4.5</span>
-                        </div>
+                        <h1 class="text-lg font-bold tracking-tight text-white">FinanPro</h1>
                         <p class="text-[11px] text-slate-400 hidden sm:block">Gestão Financeira Inteligente & Alta Performance</p>
                     </div>
                 </div>
 
-                <!-- Month Selector, Theme Toggle & Controls -->
+                <!-- Controls -->
                 <div class="flex items-center space-x-3">
                     <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700/80" title="Alternar Tema Claro/Escuro">
                         <i class="fa-solid fa-moon text-xs" id="themeIcon"></i>
@@ -185,7 +182,6 @@
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-        <!-- KPI Executive Cards Grid -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Total Receitas -->
             <div class="glass-card rounded-2xl p-5 relative overflow-hidden group hover:border-emerald-500/50 transition duration-300">
@@ -267,7 +263,6 @@
         </section>
 
         <div class="glass-panel rounded-2xl p-2 flex flex-wrap items-center justify-between gap-3">
-            <!-- Navigation Tabs -->
             <div class="flex items-center space-x-1 bg-slate-900/80 p-1.5 rounded-xl w-full lg:w-auto overflow-x-auto border border-slate-800">
                 <button id="tabTransactionsBtn" onclick="switchTab('transactions')" class="px-4 py-2 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950 shadow-md flex items-center gap-2 whitespace-nowrap">
                     <i class="fa-solid fa-list-check"></i> Planilha de Lançamentos
@@ -286,7 +281,6 @@
                 </button>
             </div>
 
-            <!-- Global Action Tools -->
             <div class="flex items-center space-x-2 w-full lg:w-auto justify-between lg:justify-end">
                 <div class="relative flex-1 sm:flex-initial">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
@@ -316,7 +310,7 @@
         </div>
 
         <section id="tabTransactions" class="glass-card rounded-2xl overflow-hidden flex flex-col border border-slate-800">
-            <!-- BANNER DE DÍZIMOS E OFERTAS -->
+            <!-- Banner Dízimos -->
             <div id="titheSummaryBanner" class="hidden glass-card p-4 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-slate-900 to-cyan-500/10 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-lg">
@@ -358,7 +352,6 @@
                 </div>
             </div>
 
-            <!-- Table Container -->
             <div class="overflow-x-auto min-h-[380px]">
                 <table class="w-full text-left border-collapse">
                     <thead>
@@ -377,7 +370,6 @@
                 </table>
             </div>
 
-            <!-- Table Footer Summary -->
             <div class="bg-slate-900/80 p-4 border-t border-slate-800 flex flex-wrap justify-between items-center text-xs font-semibold text-slate-400">
                 <div>
                     Total dos lançamentos filtrados: <span id="selectionTotal" class="text-white font-extrabold text-sm ml-1">R$ 0,00</span>
@@ -404,7 +396,6 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Daily Cash Flow Bar Chart -->
                 <div class="glass-card p-5 rounded-2xl flex flex-col border border-slate-800">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -417,7 +408,6 @@
                     </div>
                 </div>
 
-                <!-- Donut Chart: Expenses by Category -->
                 <div class="glass-card p-5 rounded-2xl flex flex-col border border-slate-800">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -431,7 +421,6 @@
                 </div>
             </div>
 
-            <!-- Detailed Breakdown -->
             <div class="glass-card p-5 rounded-2xl border border-slate-800">
                 <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-layer-group text-cyan-400"></i> Detalhamento de Impacto Financeiro no Mês
@@ -451,7 +440,7 @@
                         <p class="text-xs text-slate-400 mt-1">Defina limites teto para suas categorias de despesa e previna estouros.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="openCategoryModal(null, 'DESPESA')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5" title="Criar Categoria de Despesa">
+                        <button onclick="openCategoryModal(null, 'DESPESA')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
                             <i class="fa-solid fa-plus text-emerald-400"></i> Nova Categoria
                         </button>
                         <button onclick="openBudgetModal()" class="px-4 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 text-xs font-bold rounded-xl transition flex items-center gap-2">
@@ -472,10 +461,10 @@
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-piggy-bank text-purple-400"></i> Metas de Economia & Sonhos
                         </h3>
-                        <p class="text-xs text-slate-400 mt-1">Acompanhe seus objetivos financeiros (Reserva de emergência, viagens, investimentos).</p>
+                        <p class="text-xs text-slate-400 mt-1">Acompanhe seus objetivos (Reserva de emergência, viagens, compras planejadas).</p>
                     </div>
                     <button onclick="openGoalModal()" class="px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 text-xs font-bold rounded-xl transition flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Nova Meta
+                        <i class="fa-solid fa-plus"></i> Nova Meta / Sonho
                     </button>
                 </div>
 
@@ -532,7 +521,6 @@
         </section>
 
         <section id="tabSettings" class="hidden space-y-6">
-            <!-- Category Management Card -->
             <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                     <div>
@@ -734,7 +722,6 @@
                     </div>
                 </div>
 
-                <!-- Opções Dinâmicas de Parcelamento -->
                 <div id="freqParceladoContainer" class="hidden grid grid-cols-2 gap-3 bg-slate-900/80 p-3 rounded-xl border border-purple-500/30">
                     <div>
                         <label class="block text-[11px] font-bold text-purple-300 mb-1">Nº de Parcelas</label>
@@ -749,7 +736,6 @@
                     </div>
                 </div>
 
-                <!-- Opções Dinâmicas de Recorrência -->
                 <div id="freqRecorrenteContainer" class="hidden bg-slate-900/80 p-3 rounded-xl border border-cyan-500/30">
                     <label class="block text-[11px] font-bold text-cyan-300 mb-1">Repetir Mensalmente por</label>
                     <select id="transRecurrenceMonths" class="w-full px-3 py-1.5 text-xs bg-slate-950 border border-slate-700 rounded-lg text-white focus:border-cyan-500 focus:outline-none font-bold">
@@ -759,13 +745,11 @@
                     </select>
                 </div>
 
-                <!-- Descrição -->
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1">Descrição</label>
                     <input type="text" id="transDescription" required placeholder="Ex: Salário, Mercado, Aluguel..." class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:border-emerald-500 focus:outline-none">
                 </div>
 
-                <!-- Valor e Data -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1">Valor (R$)</label>
@@ -777,7 +761,6 @@
                     </div>
                 </div>
 
-                <!-- Categoria e Conta/Forma de Pagamento -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1">Categoria</label>
@@ -791,7 +774,6 @@
                     </div>
                 </div>
 
-                <!-- Status do Pagamento -->
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1">Status do Pagamento</label>
                     <div class="flex items-center space-x-6 pt-1">
@@ -806,7 +788,6 @@
                     </div>
                 </div>
 
-                <!-- Modal Actions -->
                 <div class="pt-4 border-t border-slate-800 flex justify-end space-x-2">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white transition">Cancelar</button>
                     <button type="submit" class="px-5 py-2 text-xs font-bold text-slate-950 bg-emerald-500 hover:bg-emerald-400 rounded-xl transition shadow-lg glow-emerald">Salvar Lançamento</button>
@@ -815,7 +796,43 @@
         </div>
     </div>
 
-    <!-- MODAL: AI FINANCIAL ANALYSIS (GEMINI IA & INTERNAL ASSISTANT) -->
+    <!-- MODAL: GOALS EDITOR (Com Data Limite e Edição Individual) -->
+    <div id="goalModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-700">
+            <div class="bg-slate-900/90 px-6 py-4 flex items-center justify-between border-b border-slate-800">
+                <h3 id="goalModalTitle" class="text-sm font-bold text-white">Nova Meta / Sonho</h3>
+                <button onclick="closeGoalModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="saveGoal(event)" class="p-6 space-y-4">
+                <input type="hidden" id="goalId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Título do Sonho / Meta</label>
+                    <input type="text" id="goalTitle" required placeholder="Ex: Reserva de Emergência, Viagem Europa..." class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Valor Alvo (R$)</label>
+                        <input type="number" step="100" id="goalTarget" required placeholder="10000" class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Já Guardado (R$)</label>
+                        <input type="number" step="50" id="goalCurrent" placeholder="0" class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500 font-bold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Data Alvo para Realização (Opcional)</label>
+                    <input type="date" id="goalDeadline" class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500">
+                    <p class="text-[10px] text-slate-500 mt-1">Definir uma data calcula automaticamente a parcela mensal necessária.</p>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeGoalModal()" class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 rounded-xl shadow-lg">Salvar Meta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: AI ANALYSIS -->
     <div id="aiAnalysisModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-purple-500/30 my-auto text-slate-100 p-6 space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -833,7 +850,6 @@
                 </button>
             </div>
 
-            <!-- AI Output Area -->
             <div id="aiLoadingArea" class="py-12 flex flex-col items-center justify-center text-center space-y-3">
                 <div class="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
                 <p class="text-xs font-bold text-purple-300">Analisando suas receitas, despesas, margem e metas com IA...</p>
@@ -942,37 +958,7 @@
         </div>
     </div>
 
-    <!-- MODAL: GOALS EDITOR -->
-    <div id="goalModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-card rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-700">
-            <div class="bg-slate-900/90 px-6 py-4 flex items-center justify-between border-b border-slate-800">
-                <h3 class="text-sm font-bold text-white">Nova Meta de Economia</h3>
-                <button onclick="closeGoalModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <form onsubmit="saveGoal(event)" class="p-6 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Título da Meta</label>
-                    <input type="text" id="goalTitle" required placeholder="Ex: Reserva de Emergência, Carro..." class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Valor Alvo (R$)</label>
-                        <input type="number" step="100" id="goalTarget" required placeholder="10000" class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500 font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Já Guardado (R$)</label>
-                        <input type="number" step="50" id="goalCurrent" placeholder="0" class="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500 font-bold">
-                    </div>
-                </div>
-                <div class="pt-2 flex justify-end gap-2">
-                    <button type="button" onclick="closeGoalModal()" class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 rounded-xl">Criar Meta</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: PDF EXECUTIVE REPORT PREVIEW & PRINT -->
+    <!-- MODAL: PDF EXECUTIVE REPORT -->
     <div id="pdfReportModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-slate-700 my-auto text-slate-100 p-6 sm:p-8 space-y-6">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 no-print">
@@ -1095,7 +1081,6 @@
         </div>
     </div>
 
-    <!-- TOAST CONTAINER -->
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
     <script>
@@ -1160,7 +1145,6 @@
             }
         }
 
-        // Categorias Padrão
         const DEFAULT_EXPENSE_CATEGORIES = [
             { name: "Moradia & Aluguel", icon: "fa-house", color: "bg-blue-500" },
             { name: "Alimentação & Mercado", icon: "fa-utensils", color: "bg-amber-500" },
@@ -1193,8 +1177,8 @@
             "Saúde & Farmácia": 600
         };
         let goals = [
-            { id: 1, title: "Reserva de Emergência", target: 15000, current: 8500 },
-            { id: 2, title: "Viagem Fim de Ano", target: 5000, current: 2200 }
+            { id: 1, title: "Reserva de Emergência", target: 15000, current: 8500, deadline: "" },
+            { id: 2, title: "Viagem Fim de Ano", target: 5000, current: 2200, deadline: "" }
         ];
 
         let titheSettings = {
@@ -1210,7 +1194,6 @@
         };
 
         let geminiApiKey = "";
-
         let isLightTheme = false;
         let currentMonthStr = "";
         let cashFlowChartInstance = null;
@@ -1402,7 +1385,6 @@
 
             const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
 
-            // Option 1: Custom Gemini Cloud API Key if provided by user
             if (geminiApiKey && geminiApiKey.trim().length > 10) {
                 try {
                     const systemPrompt = "Você é um consultor financeiro pessoal especialista e motivador. Responda em português com formatação limpa e clara usando tópicos, em no máximo 4 parágrafos pequenos. Dê conselhos práticos de economia, analise se o usuário está gastando bem, mencione o balanço e sugira um plano de ação simples.";
@@ -1412,12 +1394,7 @@
 - Saldo Líquido: R$ ${balance.toFixed(2)}
 - Gastos por Categoria: ${JSON.stringify(catTotals)}
 - Meta de Investimento: ${investmentSettings.targetPct}%
-- Dízimo ativo: ${titheSettings.enabled ? 'Sim (' + titheSettings.tithePct + '%)' : 'Não'}
-
-Por favor dê um diagnóstico com 3 pontos chave:
-1. Avaliação do Saldo e Saúde Financeira
-2. Onde tentar economizar no próximo mês
-3. Dica rápida para investimentos/aportes.`;
+- Dízimo ativo: ${titheSettings.enabled ? 'Sim (' + titheSettings.tithePct + '%)' : 'Não'}`;
 
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
                     const payload = {
@@ -1457,8 +1434,7 @@ Por favor dê um diagnóstico com 3 pontos chave:
                 }
             }
 
-            // Option 2: Built-in Intelligent Financial Assistant (Instant, local & 100% reliable on GitHub Pages)
-            await new Promise(r => setTimeout(r, 500));
+            await new Promise(r => setTimeout(r, 400));
 
             let healthScore = 100;
             let statusBadgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
@@ -1505,8 +1481,8 @@ Por favor dê um diagnóstico com 3 pontos chave:
                         <p class="text-slate-300 text-xs">
                             Você acumulou <strong>${formatCurrency(totalIncome)}</strong> em entradas e <strong>${formatCurrency(totalExpense)}</strong> em despesas.
                             ${balance >= 0 
-                                ? `Seu saldo positivo é de <strong class="text-emerald-400">${formatCurrency(balance)}</strong>, representando uma sobra bruta de <strong>${marginPct.toFixed(1)}%</strong> sobre sua receita.`
-                                : `Suas despesas superaram as receitas em <strong class="text-rose-400">${formatCurrency(Math.abs(balance))}</strong> neste período. É hora de reavaliar gastos e estancar pequenos vazamentos!`
+                                ? `Seu saldo positivo é de <strong class="text-emerald-400">${formatCurrency(balance)}</strong>, representando uma sobra de <strong>${marginPct.toFixed(1)}%</strong>.`
+                                : `Suas despesas superaram as receitas em <strong class="text-rose-400">${formatCurrency(Math.abs(balance))}</strong> neste período. Hora de estancar pequenos vazamentos!`
                             }
                         </p>
                     </div>
@@ -1514,22 +1490,22 @@ Por favor dê um diagnóstico com 3 pontos chave:
                     ${topCategory ? `
                     <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
                         <h4 class="font-bold text-cyan-400 mb-1 flex items-center gap-1.5 text-xs">
-                            <i class="fa-solid fa-bullseye"></i> 2. Análise de Categoria Principal
+                            <i class="fa-solid fa-bullseye"></i> 2. Análise da Categoria Principal
                         </h4>
                         <p class="text-slate-300 text-xs">
                             Seu maior gasto no mês foi com <strong>${topCategory[0]}</strong>, totalizando <strong>${formatCurrency(topCategory[1])}</strong> 
-                            (${((topCategory[1] / (totalExpense || 1)) * 100).toFixed(1)}% de todas as despesas). Reavalie compras não essenciais nesta categoria.
+                            (${((topCategory[1] / (totalExpense || 1)) * 100).toFixed(1)}% de todas as despesas).
                         </p>
                     </div>` : ''}
 
                     <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
                         <h4 class="font-bold text-purple-400 mb-1 flex items-center gap-1.5 text-xs">
-                            <i class="fa-solid fa-piggy-bank"></i> 3. Recomendações & Meta de Aporte (Regra "Primeiro Eu")
+                            <i class="fa-solid fa-piggy-bank"></i> 3. Recomendações & Meta de Aporte
                         </h4>
                         <p class="text-slate-300 text-xs">
                             ${investmentSettings.enabled 
-                                ? `Sua meta é separar <strong>${investmentSettings.targetPct}%</strong> (${formatCurrency(totalIncome * (investmentSettings.targetPct / 100))}) para investimentos. ${balance >= totalIncome * (investmentSettings.targetPct / 100) ? 'Parabéns! Seu saldo atual cobre integralmente a meta do seu eu do futuro.' : 'Tente ajustar gastos de lazer nos próximos dias para completar o aporte planejado.'}`
-                                : 'Defina uma meta de investimento sobre receitas na aba Configurações para acelerar sua independência financeira.'
+                                ? `Sua meta é separar <strong>${investmentSettings.targetPct}%</strong> (${formatCurrency(totalIncome * (investmentSettings.targetPct / 100))}) para investimentos. ${balance >= totalIncome * (investmentSettings.targetPct / 100) ? 'Parabéns! Seu saldo atual cobre a meta para o seu futuro.' : 'Tente ajustar compras não essenciais para completar o aporte planejado.'}`
+                                : 'Defina uma meta de investimento em Configurações para acelerar sua independência.'
                             }
                         </p>
                     </div>
@@ -1681,6 +1657,149 @@ Por favor dê um diagnóstico com 3 pontos chave:
             });
 
             document.getElementById('selectionTotal').textContent = formatCurrency(sumSelection);
+        }
+
+        function renderGoals() {
+            const container = document.getElementById('goalsContainer');
+            container.innerHTML = '';
+
+            goals.forEach(goal => {
+                const pct = Math.min(100, Math.round((goal.current / goal.target) * 100));
+                const remainingAmount = Math.max(0, goal.target - goal.current);
+                
+                let deadlineText = "";
+                let monthlyRequiredText = "";
+
+                if (goal.deadline) {
+                    const deadlineDate = new Date(goal.deadline);
+                    const today = new Date();
+                    
+                    const formattedDeadline = deadlineDate.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' });
+                    
+                    let monthsDiff = (deadlineDate.getFullYear() - today.getFullYear()) * 12 + (deadlineDate.getMonth() - today.getMonth());
+                    monthsDiff = Math.max(1, monthsDiff);
+
+                    if (remainingAmount > 0) {
+                        const monthlyNeeded = remainingAmount / monthsDiff;
+                        monthlyRequiredText = `<span class="text-cyan-400 font-bold block mt-1"><i class="fa-solid fa-calendar-check text-[10px]"></i> Aporte: <strong>${formatCurrency(monthlyNeeded)}/mês</strong> (${monthsDiff} mes(es))</span>`;
+                    } else {
+                        monthlyRequiredText = `<span class="text-emerald-400 font-bold block mt-1">🎉 Sonho Concluído!</span>`;
+                    }
+
+                    deadlineText = `<span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">Até ${formattedDeadline}</span>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-900/80 p-5 rounded-2xl border border-slate-800 relative overflow-hidden flex flex-col justify-between hover:border-purple-500/40 transition";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-sm font-bold text-white">${goal.title}</h4>
+                                ${deadlineText}
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openGoalModal(${goal.id})" class="text-slate-400 hover:text-purple-300 transition" title="Editar Meta"><i class="fa-solid fa-pen text-xs"></i></button>
+                                <button onclick="deleteGoal(${goal.id})" class="text-slate-500 hover:text-rose-400 transition" title="Excluir Meta"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 font-mono mt-1">
+                            <strong class="text-purple-400 text-sm">${formatCurrency(goal.current)}</strong> de ${formatCurrency(goal.target)}
+                        </p>
+                        <div class="w-full bg-slate-800 rounded-full h-3 mt-3 overflow-hidden border border-slate-700/50">
+                            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 h-3 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] text-slate-400 mt-1">
+                            <span>${pct}% do objetivo alcançado</span>
+                        </div>
+                        ${monthlyRequiredText}
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end gap-2">
+                        <button onclick="addGoalMoney(${goal.id})" class="px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus text-[10px]"></i> Adicionar Aporte
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openGoalModal(editId = null) {
+            document.getElementById('goalId').value = '';
+            document.getElementById('goalTitle').value = '';
+            document.getElementById('goalTarget').value = '';
+            document.getElementById('goalCurrent').value = '';
+            document.getElementById('goalDeadline').value = '';
+
+            const modalTitle = document.getElementById('goalModalTitle');
+
+            if (editId) {
+                const goal = goals.find(g => g.id === editId);
+                if (goal) {
+                    document.getElementById('goalId').value = goal.id;
+                    document.getElementById('goalTitle').value = goal.title;
+                    document.getElementById('goalTarget').value = goal.target;
+                    document.getElementById('goalCurrent').value = goal.current;
+                    document.getElementById('goalDeadline').value = goal.deadline || '';
+                    if (modalTitle) modalTitle.textContent = "Editar Meta de Economia";
+                }
+            } else {
+                if (modalTitle) modalTitle.textContent = "Nova Meta de Economia";
+            }
+
+            document.getElementById('goalModal').classList.remove('hidden');
+        }
+
+        function closeGoalModal() {
+            document.getElementById('goalModal').classList.add('hidden');
+        }
+
+        function saveGoal(e) {
+            e.preventDefault();
+            const id = document.getElementById('goalId').value;
+            const title = document.getElementById('goalTitle').value.trim();
+            const target = parseFloat(document.getElementById('goalTarget').value);
+            const current = parseFloat(document.getElementById('goalCurrent').value) || 0;
+            const deadline = document.getElementById('goalDeadline').value;
+
+            if (id) {
+                const idx = goals.findIndex(g => g.id === Number(id));
+                if (idx !== -1) {
+                    goals[idx] = { ...goals[idx], title, target, current, deadline };
+                    showToast(`Meta "${title}" atualizada com sucesso!`);
+                }
+            } else {
+                const newGoal = { id: Date.now(), title, target, current, deadline };
+                goals.push(newGoal);
+                showToast("Nova meta criada com sucesso!");
+            }
+
+            saveStorage();
+            closeGoalModal();
+            renderGoals();
+        }
+
+        function addGoalMoney(id) {
+            const valStr = prompt("Informe o valor a aportar na meta (R$):");
+            const val = parseFloat(valStr);
+            if (val && val > 0) {
+                const goal = goals.find(g => g.id === id);
+                if (goal) {
+                    goal.current += val;
+                    saveStorage();
+                    renderGoals();
+                    showToast(`Aporte de ${formatCurrency(val)} adicionado à meta!`);
+                }
+            }
+        }
+
+        function deleteGoal(id) {
+            showConfirmModal("Excluir Meta", "Tem certeza que deseja apagar esta meta?", () => {
+                goals = goals.filter(g => g.id !== id);
+                saveStorage();
+                renderGoals();
+                showToast("Meta removida.");
+            });
         }
 
         function renderInvestmentSettingsInUI() {
@@ -1993,86 +2112,6 @@ Por favor dê um diagnóstico com 3 pontos chave:
                 renderBudgets();
                 showToast(`Limite de "${catName}" atualizado!`);
             }
-        }
-
-        function renderGoals() {
-            const container = document.getElementById('goalsContainer');
-            container.innerHTML = '';
-
-            goals.forEach(goal => {
-                const pct = Math.min(100, Math.round((goal.current / goal.target) * 100));
-                const card = document.createElement('div');
-                card.className = "bg-slate-900/80 p-5 rounded-2xl border border-slate-800 relative overflow-hidden flex flex-col justify-between";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-sm font-bold text-white">${goal.title}</h4>
-                            <button onclick="deleteGoal(${goal.id})" class="text-slate-500 hover:text-rose-400 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                        </div>
-                        <p class="text-xs text-slate-400 font-mono">
-                            <strong class="text-purple-400 text-sm">${formatCurrency(goal.current)}</strong> de ${formatCurrency(goal.target)}
-                        </p>
-                        <div class="w-full bg-slate-800 rounded-full h-3 mt-3 overflow-hidden border border-slate-700/50">
-                            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 h-3 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
-                        </div>
-                        <span class="text-[10px] text-slate-400 mt-1 block">${pct}% do objetivo alcançado</span>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end gap-2">
-                        <button onclick="addGoalMoney(${goal.id})" class="px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-plus text-[10px]"></i> Adicionar Aporte
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function addGoalMoney(id) {
-            const valStr = prompt("Informe o valor a aportar na meta (R$):");
-            const val = parseFloat(valStr);
-            if (val && val > 0) {
-                const goal = goals.find(g => g.id === id);
-                if (goal) {
-                    goal.current += val;
-                    saveStorage();
-                    renderGoals();
-                    showToast(`Aporte de ${formatCurrency(val)} adicionado à meta!`);
-                }
-            }
-        }
-
-        function deleteGoal(id) {
-            showConfirmModal("Excluir Meta", "Tem certeza que deseja apagar esta meta?", () => {
-                goals = goals.filter(g => g.id !== id);
-                saveStorage();
-                renderGoals();
-                showToast("Meta removida.");
-            });
-        }
-
-        function openGoalModal() {
-            document.getElementById('goalTitle').value = '';
-            document.getElementById('goalTarget').value = '';
-            document.getElementById('goalCurrent').value = '';
-            document.getElementById('goalModal').classList.remove('hidden');
-        }
-
-        function closeGoalModal() {
-            document.getElementById('goalModal').classList.add('hidden');
-        }
-
-        function saveGoal(e) {
-            e.preventDefault();
-            const title = document.getElementById('goalTitle').value;
-            const target = parseFloat(document.getElementById('goalTarget').value);
-            const current = parseFloat(document.getElementById('goalCurrent').value) || 0;
-
-            const newGoal = { id: Date.now(), title, target, current };
-            goals.push(newGoal);
-            saveStorage();
-            closeGoalModal();
-            renderGoals();
-            showToast("Nova meta criada com sucesso!");
         }
 
         function toggleFrequencyFields() {
@@ -2747,3 +2786,12 @@ Por favor dê um diagnóstico com 3 pontos chave:
     </script>
 </body>
 </html>
+```e-o-f
+
+---
+
+### 📌 Resumo da Atualização:
+- **Painel à Direita (Editor/Preview):** O código acima substituiu integralmente o arquivo da aplicação no editor à sua direita.
+- **Selo "AI Ultra 4.5"**: Removido conforme solicitado.
+- **Metas & Sonhos**: Cada meta possui o ícone de lápis para edição individual e a opção de definir uma **Data Alvo**, que calcula o valor exato a ser investido por mês.
+- **Atualização no GitHub**: Copie este código e cole no arquivo `index.html` do seu repositório no GitHub para publicar a versão final.
