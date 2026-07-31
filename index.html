@@ -59,7 +59,6 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Light Mode Styles */
         body.light-theme {
             background-color: #f8fafc;
             color: #0f172a;
@@ -84,7 +83,6 @@
         body.light-theme .border-slate-800,
         body.light-theme .border-slate-700 { border-color: #cbd5e1 !important; }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -105,7 +103,6 @@
             box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
         }
 
-        /* Animated Toast */
         @keyframes slideIn {
             from { transform: translateY(-100%) scale(0.9); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
@@ -136,6 +133,7 @@
 </head>
 <body class="h-full antialiased flex flex-col min-h-screen pb-16 md:pb-0">
 
+    <!-- MODAL DE AUTENTICAÇÃO / LOGIN SUPABASE -->
     <div id="authOverlay" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4">
         <div class="glass-card rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-700 p-8 space-y-6">
             <div class="text-center space-y-2">
@@ -185,7 +183,7 @@
 
                 <!-- Controls -->
                 <div class="flex items-center space-x-3">
-                    <!-- Status do Usuário Logado -->
+                    <!-- User Session Badge -->
                     <div id="userInfoChip" class="hidden sm:flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs">
                         <i class="fa-solid fa-cloud-check text-emerald-400"></i>
                         <span id="userEmailSpan" class="text-slate-300 font-medium max-w-[120px] truncate">--</span>
@@ -351,6 +349,7 @@
             </div>
         </div>
 
+        <!-- TAB 1: TRANSACTIONS TABLE -->
         <section id="tabTransactions" class="glass-card rounded-2xl overflow-hidden flex flex-col border border-slate-800">
             <!-- Banner Dízimos -->
             <div id="titheSummaryBanner" class="hidden glass-card p-4 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-slate-900 to-cyan-500/10 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800">
@@ -424,6 +423,7 @@
             </div>
         </section>
 
+        <!-- TAB 2: DASHBOARD CHARTS -->
         <section id="tabDashboard" class="hidden space-y-6">
             <div class="flex justify-between items-center bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
                 <div>
@@ -472,6 +472,7 @@
             </div>
         </section>
 
+        <!-- TAB 3: BUDGET & LIMITS -->
         <section id="tabBudget" class="hidden space-y-6">
             <div class="glass-card p-6 rounded-2xl border border-slate-800">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -496,6 +497,7 @@
             </div>
         </section>
 
+        <!-- TAB 4: GOALS & SIMULATOR -->
         <section id="tabGoals" class="hidden space-y-6">
             <div class="glass-card p-6 rounded-2xl border border-slate-800">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -562,6 +564,7 @@
             </div>
         </section>
 
+        <!-- TAB 5: SETTINGS -->
         <section id="tabSettings" class="hidden space-y-6">
             <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
@@ -723,7 +726,6 @@
             <form id="transactionForm" onsubmit="saveTransaction(event)" class="p-6 space-y-4">
                 <input type="hidden" id="transId">
 
-                <!-- Tipo toggle -->
                 <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl text-center font-bold text-xs border border-slate-800">
                     <label class="cursor-pointer">
                         <input type="radio" name="transType" value="RECEITA" class="peer hidden" onchange="updateModalCategories()">
@@ -739,7 +741,6 @@
                     </label>
                 </div>
 
-                <!-- Frequência / Repetição -->
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5">Frequência do Lançamento</label>
                     <div class="grid grid-cols-3 gap-2 p-1 bg-slate-900 rounded-xl text-center font-semibold text-[11px] border border-slate-800">
@@ -1130,9 +1131,11 @@
         // CONFIGURAÇÃO CONECTADA DO SUPABASE
         // ----------------------------------------------------
         const SUPABASE_URL = 'https://cnijyljechpzehemnfsl.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuaWp5bGplY2hwemVoZW1uZnNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTM4MjksImV4cCI6MjEwMTA4OTgyOX0.PNdG7UpyuVaLsRFm9Li7vvtBdfWJiP3SbRf2YmeFoDA';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuaWp5bGplYhwemVoZW1uZnNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTM4MjksImV4cCI6MjEwMTA4OTgyOX0.PNdG7UpyuVaLsRFm9Li7vvtBdfWJiP3SbRf2YmeFoDA';
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Safely extract createClient from window.supabase
+        const { createClient } = window.supabase || {};
+        const supabaseClient = createClient ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
         let currentUser = null;
         let isSignUpMode = false;
 
@@ -1223,23 +1226,32 @@
             initPWA();
             calculateCompoundInterest();
 
-            // Gerenciar sessão ativa no Supabase
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session?.user) {
-                onUserLoggedIn(session.user);
+            if (supabaseClient) {
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (session?.user) {
+                        onUserLoggedIn(session.user);
+                    } else {
+                        document.getElementById('authOverlay').classList.remove('hidden');
+                    }
+
+                    supabaseClient.auth.onAuthStateChange((event, session) => {
+                        if (event === 'SIGNED_IN' && session?.user) {
+                            onUserLoggedIn(session.user);
+                        } else if (event === 'SIGNED_OUT') {
+                            currentUser = null;
+                            document.getElementById('authOverlay').classList.remove('hidden');
+                            document.getElementById('userInfoChip').classList.add('hidden');
+                        }
+                    });
+                } catch (err) {
+                    console.error("Erro na inicialização do Supabase:", err);
+                    document.getElementById('authOverlay').classList.remove('hidden');
+                }
             } else {
+                console.warn("Cliente Supabase indisponível.");
                 document.getElementById('authOverlay').classList.remove('hidden');
             }
-
-            supabase.auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_IN' && session?.user) {
-                    onUserLoggedIn(session.user);
-                } else if (event === 'SIGNED_OUT') {
-                    currentUser = null;
-                    document.getElementById('authOverlay').classList.remove('hidden');
-                    document.getElementById('userInfoChip').classList.add('hidden');
-                }
-            });
         };
 
         function toggleAuthMode() {
@@ -1254,15 +1266,21 @@
             const email = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value;
 
+            if (!supabaseClient) {
+                showToast("Erro: Conexão com banco de dados não disponível.");
+                return;
+            }
+
             if (isSignUpMode) {
-                const { data, error } = await supabase.auth.signUp({ email, password });
+                const { data, error } = await supabaseClient.auth.signUp({ email, password });
                 if (error) {
                     showToast("Erro ao cadastrar: " + error.message);
                 } else {
-                    showToast("Conta criada! Verifique seu e-mail para confirmar.");
+                    showToast("Conta criada com sucesso! Faça login.");
+                    toggleAuthMode();
                 }
             } else {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (error) {
                     showToast("Erro ao entrar: " + error.message);
                 }
@@ -1279,44 +1297,50 @@
         }
 
         async function logoutSupabase() {
-            await supabase.auth.signOut();
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
         }
 
         async function loadSupabaseStorage() {
-            if (!currentUser) return;
+            if (!currentUser || !supabaseClient) return;
 
-            const { data, error } = await supabase
-                .from('financas')
-                .select('dados')
-                .eq('user_id', currentUser.id)
-                .single();
+            try {
+                const { data, error } = await supabaseClient
+                    .from('financas')
+                    .select('dados')
+                    .eq('user_id', currentUser.id)
+                    .single();
 
-            if (data && data.dados) {
-                const d = data.dados;
-                if (d.transactions) transactions = d.transactions;
-                if (d.budgets) budgets = d.budgets;
-                if (d.accounts) accounts = d.accounts;
-                if (d.goals) goals = d.goals;
-                if (d.expenseCategories) expenseCategories = d.expenseCategories;
-                if (d.incomeCategories) incomeCategories = d.incomeCategories;
-                if (d.titheSettings) titheSettings = d.titheSettings;
-                if (d.investmentSettings) investmentSettings = d.investmentSettings;
-                if (d.geminiApiKey) {
-                    geminiApiKey = d.geminiApiKey;
-                    const input = document.getElementById('geminiApiKeyInput');
-                    if (input) input.value = geminiApiKey;
+                if (data && data.dados) {
+                    const d = data.dados;
+                    if (d.transactions) transactions = d.transactions;
+                    if (d.budgets) budgets = d.budgets;
+                    if (d.accounts) accounts = d.accounts;
+                    if (d.goals) goals = d.goals;
+                    if (d.expenseCategories) expenseCategories = d.expenseCategories;
+                    if (d.incomeCategories) incomeCategories = d.incomeCategories;
+                    if (d.titheSettings) titheSettings = d.titheSettings;
+                    if (d.investmentSettings) investmentSettings = d.investmentSettings;
+                    if (d.geminiApiKey) {
+                        geminiApiKey = d.geminiApiKey;
+                        const input = document.getElementById('geminiApiKeyInput');
+                        if (input) input.value = geminiApiKey;
+                    }
+                } else {
+                    transactions = [...sampleData];
+                    saveStorage();
                 }
-            } else {
-                // Primeira vez: popular com dados de exemplo e salvar
+            } catch (err) {
+                console.error("Erro ao carregar dados do Supabase:", err);
                 transactions = [...sampleData];
-                saveStorage();
             }
 
             updateApp();
         }
 
         async function saveStorage() {
-            if (!currentUser) return;
+            if (!currentUser || !supabaseClient) return;
 
             const payload = {
                 transactions,
@@ -1330,16 +1354,20 @@
                 geminiApiKey
             };
 
-            const { error } = await supabase
-                .from('financas')
-                .upsert({ 
-                    user_id: currentUser.id, 
-                    dados: payload,
-                    updated_at: new Date().toISOString()
-                }, { onConflict: 'user_id' });
+            try {
+                const { error } = await supabaseClient
+                    .from('financas')
+                    .upsert({ 
+                        user_id: currentUser.id, 
+                        dados: payload,
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'user_id' });
 
-            if (error) {
-                console.error("Erro ao sincronizar com o Supabase:", error.message);
+                if (error) {
+                    console.error("Erro ao sincronizar com o Supabase:", error.message);
+                }
+            } catch (err) {
+                console.error("Exceção ao salvar dados:", err);
             }
         }
 
@@ -2193,6 +2221,10 @@
                 
                 const safeCatName = catName.replace(/'/g, "\\'");
 
+                const remainingInfo = limit > 0 
+                    ? (limit > spent ? 'Restante: ' + formatCurrency(limit - spent) : '<strong class="text-rose-400">Estourou: ' + formatCurrency(spent - limit) + '</strong>') 
+                    : '<button onclick="openSingleBudgetPrompt(\'' + safeCatName + '\', ' + limit + ')" class="text-emerald-400 font-bold hover:underline">Definir Teto</button>';
+
                 card.innerHTML = `
                     <div class="flex justify-between items-center mb-3">
                         <div class="flex items-center gap-2.5">
@@ -2218,7 +2250,7 @@
                         </div>
                         <div class="flex justify-between items-center mt-2.5 text-[11px] text-slate-400">
                             <span>Consumido: <strong class="text-slate-200">${limit > 0 ? pct + '%' : (spent > 0 ? 'Sem teto' : '0%')}</strong></span>
-                            <span>${limit > 0 ? (limit > spent ? 'Restante: ' + formatCurrency(limit - spent) : '<strong class="text-rose-400">Estourou: ' + formatCurrency(spent - limit) + '</strong>') : `<button onclick="openSingleBudgetPrompt('${safeCatName}', ${limit})" class="text-emerald-400 font-bold hover:underline">Definir Teto</button>`}</span>
+                            <span>${remainingInfo}</span>
                         </div>
                     </div>
                 `;
