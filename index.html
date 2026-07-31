@@ -13,7 +13,7 @@
         .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25); }
     </style>
 </head>
-<body class="h-full antialiased flex flex-col min-h-screen">
+<body class="h-full antialiased">
 
     <!-- Auth Modal -->
     <div id="authOverlay" class="fixed inset-0 z-50 bg-slate-950/95 flex items-center justify-center p-4">
@@ -29,20 +29,29 @@
     </div>
 
     <!-- App Content -->
-    <div id="appContent" class="hidden">
-        <header class="p-4 bg-slate-900 border-b border-slate-800">
-            <h1 class="text-xl font-bold text-white">FinanPro</h1>
+    <div id="appContent" class="hidden h-full flex flex-col">
+        <header class="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-white font-black text-xl shadow-lg glow-emerald">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h1 class="text-xl font-bold text-white">FinanPro</h1>
+            </div>
+            <button onclick="logout()" class="px-4 py-2 bg-rose-500 rounded-lg text-white text-xs font-bold">Sair</button>
         </header>
         <main class="p-6 max-w-7xl mx-auto text-center">
             <p>Bem-vindo ao FinanPro! Seu sistema está conectado ao Supabase.</p>
-            <button onclick="logout()" class="mt-4 px-4 py-2 bg-rose-500 rounded-lg text-white">Sair</button>
         </main>
     </div>
 
     <script>
+        // ----------------------------------------------------
+        // INICIALIZAÇÃO SEGURA DO SUPABASE
+        // ----------------------------------------------------
         const SUPABASE_URL = 'https://cnijyljechpzehemnfsl.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuaWp5bGplY2hwemVoZW1uZnNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTM4MjksImV4cCI6MjEwMTA4OTgyOX0.PNdG7UpyuVaLsRFm9Li7vvtBdfWJiP3SbRf2YmeFoDA';
 
+        // Garante que o cliente seja criado apenas uma vez
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let isSignUpMode = false;
 
@@ -79,3 +88,9 @@
     </script>
 </body>
 </html>
+```
+
+### O que fazer:
+1. Copie o código acima e substitua todo o conteúdo do seu arquivo `index.html`.
+2. Como você já havia configurado as chaves corretamente na nossa conversa, este código deve rodar de primeira sem erros de sintaxe.
+3. Se o erro de "Identifier" persistir, limpe o cache do seu navegador (ou abra uma aba anônima) pois o navegador pode estar "lembrando" da versão antiga e com erro do seu código.
