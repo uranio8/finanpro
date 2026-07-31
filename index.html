@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Supabase JS Client v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
         tailwind.config = {
@@ -134,6 +136,39 @@
 </head>
 <body class="h-full antialiased flex flex-col min-h-screen pb-16 md:pb-0">
 
+    <div id="authOverlay" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4">
+        <div class="glass-card rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-700 p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-2xl mx-auto shadow-lg glow-emerald mb-4">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h2 id="authModalTitle" class="text-xl font-bold text-white">Acesse o FinanPro</h2>
+                <p class="text-xs text-slate-400">Entre na sua conta para sincronizar seus dados em tempo real em qualquer dispositivo.</p>
+            </div>
+
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">E-mail</label>
+                    <input type="email" id="authEmail" required placeholder="seuemail@exemplo.com" class="w-full px-3.5 py-2.5 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Senha</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full px-3.5 py-2.5 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs rounded-xl shadow-lg glow-emerald transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> <span id="authBtnText">Entrar na Conta</span>
+                </button>
+            </form>
+
+            <div class="text-center pt-2 border-t border-slate-800">
+                <button type="button" onclick="toggleAuthMode()" id="authToggleBtn" class="text-xs font-semibold text-emerald-400 hover:underline">
+                    Não tem uma conta? Cadastre-se gratuitamente
+                </button>
+            </div>
+        </div>
+    </div>
+
     <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -150,6 +185,13 @@
 
                 <!-- Controls -->
                 <div class="flex items-center space-x-3">
+                    <!-- Status do Usuário Logado -->
+                    <div id="userInfoChip" class="hidden sm:flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs">
+                        <i class="fa-solid fa-cloud-check text-emerald-400"></i>
+                        <span id="userEmailSpan" class="text-slate-300 font-medium max-w-[120px] truncate">--</span>
+                        <button onclick="logoutSupabase()" class="text-slate-500 hover:text-rose-400 ml-1" title="Sair da Conta"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    </div>
+
                     <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700/80" title="Alternar Tema Claro/Escuro">
                         <i class="fa-solid fa-moon text-xs" id="themeIcon"></i>
                     </button>
@@ -1084,66 +1126,17 @@
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
     <script>
+        // ----------------------------------------------------
+        // CONFIGURAÇÃO CONECTADA DO SUPABASE
+        // ----------------------------------------------------
+        const SUPABASE_URL = 'https://cnijyljechpzehemnfsl.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuaWp5bGplY2hwemVoZW1uZnNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTM4MjksImV4cCI6MjEwMTA4OTgyOX0.PNdG7UpyuVaLsRFm9Li7vvtBdfWJiP3SbRf2YmeFoDA';
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let currentUser = null;
+        let isSignUpMode = false;
+
         let deferredPrompt = null;
-
-        function initPWA() {
-            const manifestData = {
-                name: "FinanPro - Controle Financeiro",
-                short_name: "FinanPro",
-                description: "Gestão Financeira Inteligente & Alta Performance",
-                start_url: "./",
-                display: "standalone",
-                background_color: "#0b1120",
-                theme_color: "#0f172a",
-                icons: [
-                    { src: "https://cdn-icons-png.flaticon.com/512/2838/2838912.png", sizes: "192x192", type: "image/png" },
-                    { src: "https://cdn-icons-png.flaticon.com/512/2838/2838912.png", sizes: "512x512", type: "image/png" }
-                ]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-            const manifestURL = URL.createObjectURL(manifestBlob);
-            
-            const manifestLink = document.createElement('link');
-            manifestLink.rel = 'manifest';
-            manifestLink.href = manifestURL;
-            document.head.appendChild(manifestLink);
-
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    const CACHE_NAME = 'finanpro-cache-v2';
-                    self.addEventListener('install', (e) => { self.skipWaiting(); });
-                    self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-                    });
-                `;
-                const swBlob = new Blob([swCode], { type: 'application/javascript' });
-                const swURL = URL.createObjectURL(swBlob);
-                navigator.serviceWorker.register(swURL).catch(() => {});
-            }
-
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                const pwaBtn = document.getElementById('pwaInstallBtn');
-                if (pwaBtn) pwaBtn.classList.remove('hidden');
-            });
-        }
-
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        showToast("App instalado na tela inicial!");
-                    }
-                    deferredPrompt = null;
-                    document.getElementById('pwaInstallBtn').classList.add('hidden');
-                });
-            } else {
-                showToast("Para instalar no celular: use o menu do navegador 'Adicionar à Tela Inicial'");
-            }
-        }
 
         const DEFAULT_EXPENSE_CATEGORIES = [
             { name: "Moradia & Aluguel", icon: "fa-house", color: "bg-blue-500" },
@@ -1220,7 +1213,7 @@
             return `${yyyy}-${mm}-${dd}`;
         }
 
-        window.onload = function() {
+        window.onload = async function() {
             const today = new Date();
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1228,10 +1221,186 @@
             document.getElementById('monthPicker').value = currentMonthStr;
 
             initPWA();
-            loadStorage();
             calculateCompoundInterest();
-            updateApp();
+
+            // Gerenciar sessão ativa no Supabase
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user) {
+                onUserLoggedIn(session.user);
+            } else {
+                document.getElementById('authOverlay').classList.remove('hidden');
+            }
+
+            supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_IN' && session?.user) {
+                    onUserLoggedIn(session.user);
+                } else if (event === 'SIGNED_OUT') {
+                    currentUser = null;
+                    document.getElementById('authOverlay').classList.remove('hidden');
+                    document.getElementById('userInfoChip').classList.add('hidden');
+                }
+            });
         };
+
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            document.getElementById('authModalTitle').textContent = isSignUpMode ? "Criar Conta no FinanPro" : "Acesse o FinanPro";
+            document.getElementById('authBtnText').textContent = isSignUpMode ? "Cadastrar Conta" : "Entrar na Conta";
+            document.getElementById('authToggleBtn').textContent = isSignUpMode ? "Já tem uma conta? Faça login" : "Não tem uma conta? Cadastre-se gratuitamente";
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value;
+
+            if (isSignUpMode) {
+                const { data, error } = await supabase.auth.signUp({ email, password });
+                if (error) {
+                    showToast("Erro ao cadastrar: " + error.message);
+                } else {
+                    showToast("Conta criada! Verifique seu e-mail para confirmar.");
+                }
+            } else {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) {
+                    showToast("Erro ao entrar: " + error.message);
+                }
+            }
+        }
+
+        function onUserLoggedIn(user) {
+            currentUser = user;
+            document.getElementById('authOverlay').classList.add('hidden');
+            document.getElementById('userInfoChip').classList.remove('hidden');
+            document.getElementById('userEmailSpan').textContent = user.email;
+
+            loadSupabaseStorage();
+        }
+
+        async function logoutSupabase() {
+            await supabase.auth.signOut();
+        }
+
+        async function loadSupabaseStorage() {
+            if (!currentUser) return;
+
+            const { data, error } = await supabase
+                .from('financas')
+                .select('dados')
+                .eq('user_id', currentUser.id)
+                .single();
+
+            if (data && data.dados) {
+                const d = data.dados;
+                if (d.transactions) transactions = d.transactions;
+                if (d.budgets) budgets = d.budgets;
+                if (d.accounts) accounts = d.accounts;
+                if (d.goals) goals = d.goals;
+                if (d.expenseCategories) expenseCategories = d.expenseCategories;
+                if (d.incomeCategories) incomeCategories = d.incomeCategories;
+                if (d.titheSettings) titheSettings = d.titheSettings;
+                if (d.investmentSettings) investmentSettings = d.investmentSettings;
+                if (d.geminiApiKey) {
+                    geminiApiKey = d.geminiApiKey;
+                    const input = document.getElementById('geminiApiKeyInput');
+                    if (input) input.value = geminiApiKey;
+                }
+            } else {
+                // Primeira vez: popular com dados de exemplo e salvar
+                transactions = [...sampleData];
+                saveStorage();
+            }
+
+            updateApp();
+        }
+
+        async function saveStorage() {
+            if (!currentUser) return;
+
+            const payload = {
+                transactions,
+                budgets,
+                accounts,
+                goals,
+                expenseCategories,
+                incomeCategories,
+                titheSettings,
+                investmentSettings,
+                geminiApiKey
+            };
+
+            const { error } = await supabase
+                .from('financas')
+                .upsert({ 
+                    user_id: currentUser.id, 
+                    dados: payload,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id' });
+
+            if (error) {
+                console.error("Erro ao sincronizar com o Supabase:", error.message);
+            }
+        }
+
+        function initPWA() {
+            const manifestData = {
+                name: "FinanPro - Controle Financeiro",
+                short_name: "FinanPro",
+                description: "Gestão Financeira Inteligente & Alta Performance",
+                start_url: "./",
+                display: "standalone",
+                background_color: "#0b1120",
+                theme_color: "#0f172a",
+                icons: [
+                    { src: "https://cdn-icons-png.flaticon.com/512/2838/2838912.png", sizes: "192x192", type: "image/png" },
+                    { src: "https://cdn-icons-png.flaticon.com/512/2838/2838912.png", sizes: "512x512", type: "image/png" }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            
+            const manifestLink = document.createElement('link');
+            manifestLink.rel = 'manifest';
+            manifestLink.href = manifestURL;
+            document.head.appendChild(manifestLink);
+
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    const CACHE_NAME = 'finanpro-cache-v2';
+                    self.addEventListener('install', (e) => { self.skipWaiting(); });
+                    self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                    });
+                `;
+                const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                const swURL = URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swURL).catch(() => {});
+            }
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                const pwaBtn = document.getElementById('pwaInstallBtn');
+                if (pwaBtn) pwaBtn.classList.remove('hidden');
+            });
+        }
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast("App instalado na tela inicial!");
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('pwaInstallBtn').classList.add('hidden');
+                });
+            } else {
+                showToast("Para instalar no celular: use o menu do navegador 'Adicionar à Tela Inicial'");
+            }
+        }
 
         function toggleTheme() {
             isLightTheme = !isLightTheme;
@@ -1243,59 +1412,13 @@
                 document.body.classList.remove('light-theme');
                 icon.className = 'fa-solid fa-moon text-xs';
             }
-            localStorage.setItem('finanpro_v4_theme', isLightTheme ? 'light' : 'dark');
-        }
-
-        function loadStorage() {
-            const savedTrans = localStorage.getItem('finanpro_v3_transactions');
-            const savedBudgets = localStorage.getItem('finanpro_v3_budgets');
-            const savedAccounts = localStorage.getItem('finanpro_v3_accounts');
-            const savedGoals = localStorage.getItem('finanpro_v3_goals');
-            const savedExpCats = localStorage.getItem('finanpro_v3_exp_categories');
-            const savedIncCats = localStorage.getItem('finanpro_v3_inc_categories');
-            const savedTithe = localStorage.getItem('finanpro_v3_tithe');
-            const savedInvestment = localStorage.getItem('finanpro_v3_investment');
-            const savedTheme = localStorage.getItem('finanpro_v4_theme');
-            const savedApiKey = localStorage.getItem('finanpro_gemini_key');
-
-            if (savedTheme === 'light') toggleTheme();
-            if (savedApiKey) {
-                geminiApiKey = savedApiKey;
-                const apiKeyInput = document.getElementById('geminiApiKeyInput');
-                if (apiKeyInput) apiKeyInput.value = savedApiKey;
-            }
-
-            if (savedTrans) {
-                try { transactions = JSON.parse(savedTrans); } catch(e) { transactions = [...sampleData]; }
-            } else {
-                transactions = [...sampleData];
-            }
-
-            if (savedBudgets) { try { budgets = JSON.parse(savedBudgets); } catch(e){} }
-            if (savedAccounts) { try { accounts = JSON.parse(savedAccounts); } catch(e){} }
-            if (savedGoals) { try { goals = JSON.parse(savedGoals); } catch(e){} }
-            if (savedExpCats) { try { expenseCategories = JSON.parse(savedExpCats); } catch(e){} }
-            if (savedIncCats) { try { incomeCategories = JSON.parse(savedIncCats); } catch(e){} }
-            if (savedTithe) { try { titheSettings = JSON.parse(savedTithe); } catch(e){} }
-            if (savedInvestment) { try { investmentSettings = JSON.parse(savedInvestment); } catch(e){} }
-        }
-
-        function saveStorage() {
-            localStorage.setItem('finanpro_v3_transactions', JSON.stringify(transactions));
-            localStorage.setItem('finanpro_v3_budgets', JSON.stringify(budgets));
-            localStorage.setItem('finanpro_v3_accounts', JSON.stringify(accounts));
-            localStorage.setItem('finanpro_v3_goals', JSON.stringify(goals));
-            localStorage.setItem('finanpro_v3_exp_categories', JSON.stringify(expenseCategories));
-            localStorage.setItem('finanpro_v3_inc_categories', JSON.stringify(incomeCategories));
-            localStorage.setItem('finanpro_v3_tithe', JSON.stringify(titheSettings));
-            localStorage.setItem('finanpro_v3_investment', JSON.stringify(investmentSettings));
         }
 
         function saveGeminiApiKey() {
             const input = document.getElementById('geminiApiKeyInput');
             if (input) {
                 geminiApiKey = input.value.trim();
-                localStorage.setItem('finanpro_gemini_key', geminiApiKey);
+                saveStorage();
                 showToast("Chave da API Gemini salva!");
             }
         }
