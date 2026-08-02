@@ -112,44 +112,46 @@
             animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        /* REGRAS CORRIGIDAS PARA IMPRESSÃO DE PDF SEM DUPLICAÇÃO E SEM CORTAR */
         @media print {
-    /* Esconde absolutamente tudo na tela original */
-    body > * {
-        display: none !important;
-    }
-    
-    /* Exibe APENAS o container do modal */
-    #pdfReportModal {
-        display: block !important;
-        position: static !important;
-        background: white !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-    }
+            body > *:not(#pdfReportModal) {
+                display: none !important;
+            }
+            
+            #pdfReportModal {
+                display: block !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+            }
 
-    /* Oculta os botões e cabeçalhos do modal que não vão pro PDF */
-    .no-print {
-        display: none !important;
-    }
+            #pdfReportModal .glass-card {
+                max-height: none !important;
+                height: auto !important;
+                overflow: visible !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: #ffffff !important;
+            }
 
-    /* Faz a área de impressão ocupar a página naturalmente */
-    #pdfReportPrintArea {
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-    }
+            .no-print {
+                display: none !important;
+            }
 
-    /* Configurações de quebra de página limpa para tabelas */
-    table { page-break-inside: auto; }
-    tr    { page-break-inside: avoid; page-break-after: auto; }
-    thead { display: table-header-group; }
-}
+            .print-text-dark {
+                color: #0f172a !important;
+            }
+
+            table { page-break-inside: auto; }
+            tr    { page-break-inside: avoid; page-break-after: auto; }
+            thead { display: table-header-group; }
+        }
     </style>
 </head>
 <body class="h-full antialiased flex flex-col min-h-screen pb-16 md:pb-0">
@@ -2717,97 +2719,70 @@
         }
 
         function generatePDFReport() {
-    const monthData = getFilteredTransactionsForMonth();
+            const monthData = getFilteredTransactionsForMonth();
 
-    const [yyyy, mm] = currentMonthStr.split('-');
-    const dateObj = new Date(Number(yyyy), Number(mm) - 1, 1);
-    const monthName = dateObj.toLocaleString('pt-BR', { month: 'long' });
-    document.getElementById('pdfReportPeriod').textContent = `${monthName.toUpperCase()} / ${yyyy}`;
-    
-    const todayStr = new Date().toLocaleDateString('pt-BR');
-    document.getElementById('pdfReportGenDate').textContent = `Gerado em: ${todayStr}`;
+            const [yyyy, mm] = currentMonthStr.split('-');
+            const dateObj = new Date(Number(yyyy), Number(mm) - 1, 1);
+            const monthName = dateObj.toLocaleString('pt-BR', { month: 'long' });
+            document.getElementById('pdfReportPeriod').textContent = `${monthName.toUpperCase()} / ${yyyy}`;
+            
+            const todayStr = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('pdfReportGenDate').textContent = `Gerado em: ${todayStr}`;
 
-    // --- CORREÇÃO AQUI: Soma todos os lançamentos do mês (independente de estar PAGO ou PENDENTE) ---
-    const totalIncome = monthData
-        .filter(t => t.type === 'RECEITA')
-        .reduce((acc, t) => acc + Number(t.amount), 0);
-        
-    const totalExpense = monthData
-        .filter(t => t.type === 'DESPESA')
-        .reduce((acc, t) => acc + Number(t.amount), 0);
-        
-    const balance = totalIncome - totalExpense;
-    
-    const targetPct = investmentSettings.enabled ? (investmentSettings.targetPct || 0) : 0;
-    const targetInvestmentVal = totalIncome * (targetPct / 100);
+            // Soma TODOS os lançamentos do mês (tanto PAGO quanto PENDENTE)
+            const totalIncome = monthData
+                .filter(t => t.type === 'RECEITA')
+                .reduce((acc, t) => acc + Number(t.amount), 0);
+                
+            const totalExpense = monthData
+                .filter(t => t.type === 'DESPESA')
+                .reduce((acc, t) => acc + Number(t.amount), 0);
+                
+            const balance = totalIncome - totalExpense;
+            
+            const targetPct = investmentSettings.enabled ? (investmentSettings.targetPct || 0) : 0;
+            const targetInvestmentVal = totalIncome * (targetPct / 100);
 
-    // Atualiza os cards com a soma correta
-    document.getElementById('pdfIncomeTotal').textContent = formatCurrency(totalIncome);
-    document.getElementById('pdfExpenseTotal').textContent = formatCurrency(totalExpense);
-    
-    const balEl = document.getElementById('pdfBalanceTotal');
-    balEl.textContent = formatCurrency(balance);
-    balEl.className = balance >= 0 ? "text-sm font-extrabold text-emerald-700 mt-0.5 block" : "text-sm font-extrabold text-rose-700 mt-0.5 block";
+            document.getElementById('pdfIncomeTotal').textContent = formatCurrency(totalIncome);
+            document.getElementById('pdfExpenseTotal').textContent = formatCurrency(totalExpense);
+            
+            const balEl = document.getElementById('pdfBalanceTotal');
+            balEl.textContent = formatCurrency(balance);
+            balEl.className = balance >= 0 ? "text-sm font-extrabold text-emerald-700 mt-0.5 block" : "text-sm font-extrabold text-rose-700 mt-0.5 block";
 
-    document.getElementById('pdfSavingsRate').textContent = formatCurrency(targetInvestmentVal);
+            document.getElementById('pdfSavingsRate').textContent = formatCurrency(targetInvestmentVal);
 
-    // Tabela de Categorias
-    const catTotals = {};
-    const catCounts = {};
-    monthData.filter(t => t.type === 'DESPESA').forEach(t => {
-        catTotals[t.category] = (catTotals[t.category] || 0) + Number(t.amount);
-        catCounts[t.category] = (catCounts[t.category] || 0) + 1;
-    });
+            // Tabela de Categorias
+            const catTotals = {};
+            const catCounts = {};
+            monthData.filter(t => t.type === 'DESPESA').forEach(t => {
+                catTotals[t.category] = (catTotals[t.category] || 0) + Number(t.amount);
+                catCounts[t.category] = (catCounts[t.category] || 0) + 1;
+            });
 
-    const catTbody = document.getElementById('pdfCategoryTableBody');
-    catTbody.innerHTML = '';
-    
-    const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
-    const totalExpSum = sortedCats.reduce((a, b) => a + b[1], 0);
+            const catTbody = document.getElementById('pdfCategoryTableBody');
+            catTbody.innerHTML = '';
+            
+            const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+            const totalExpSum = sortedCats.reduce((a, b) => a + b[1], 0);
 
-    if (sortedCats.length === 0) {
-        catTbody.innerHTML = `<tr><td colspan="4" class="py-3 text-center text-slate-500">Nenhuma despesa registrada para este mês.</td></tr>`;
-    } else {
-        sortedCats.forEach(([cat, val]) => {
-            const pct = totalExpSum > 0 ? ((val / totalExpSum) * 100).toFixed(1) : 0;
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="py-2 px-3 font-semibold text-slate-900">${cat}</td>
-                <td class="py-2 px-3 text-center font-mono">${catCounts[cat] || 0}</td>
-                <td class="py-2 px-3 text-right font-mono font-bold">${formatCurrency(val)}</td>
-                <td class="py-2 px-3 text-right font-mono text-slate-600">${pct}%</td>
-            `;
-            catTbody.appendChild(tr);
-        });
-    }
+            if (sortedCats.length === 0) {
+                catTbody.innerHTML = `<tr><td colspan="4" class="py-3 text-center text-slate-500">Nenhuma despesa registrada para este mês.</td></tr>`;
+            } else {
+                sortedCats.forEach(([cat, val]) => {
+                    const pct = totalExpSum > 0 ? ((val / totalExpSum) * 100).toFixed(1) : 0;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="py-2 px-3 font-semibold text-slate-900">${cat}</td>
+                        <td class="py-2 px-3 text-center font-mono">${catCounts[cat] || 0}</td>
+                        <td class="py-2 px-3 text-right font-mono font-bold">${formatCurrency(val)}</td>
+                        <td class="py-2 px-3 text-right font-mono text-slate-600">${pct}%</td>
+                    `;
+                    catTbody.appendChild(tr);
+                });
+            }
 
-    // Tabela de Lançamentos
-    const transTbody = document.getElementById('pdfTransactionsTableBody');
-    transTbody.innerHTML = '';
-
-    const sortedTrans = [...monthData].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    if (sortedTrans.length === 0) {
-        transTbody.innerHTML = `<tr><td colspan="6" class="py-3 text-center text-slate-500">Nenhum lançamento cadastrado neste período.</td></tr>`;
-    } else {
-        sortedTrans.forEach(t => {
-            const isInc = t.type === 'RECEITA';
-            const dateParts = t.date.split('-');
-            const fmtDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="py-1.5 px-2 font-mono text-slate-600">${fmtDate}</td>
-                <td class="py-1.5 px-2 font-bold text-slate-900">${t.description}</td>
-                <td class="py-1.5 px-2 text-slate-600">${t.category}</td>
-                <td class="py-1.5 px-2 text-slate-600">${t.account}</td>
-                <td class="py-1.5 px-2 text-center font-bold ${t.status === 'PAGO' ? 'text-emerald-700' : 'text-amber-700'}">${t.status}</td>
-                <td class="py-1.5 px-2 text-right font-mono font-bold ${isInc ? 'text-emerald-700' : 'text-rose-700'}">${isInc ? '+' : '-'} ${formatCurrency(t.amount)}</td>
-            `;
-            transTbody.appendChild(tr);
-        });
-    }
-}
+            // Tabela de Lançamentos
             const transTbody = document.getElementById('pdfTransactionsTableBody');
             transTbody.innerHTML = '';
 
@@ -2836,21 +2811,8 @@
         }
 
         function triggerPrintPDF() {
-    // Garante que o contêiner da página permita que o navegador veja todo o conteúdo
-    const modalContent = document.querySelector('#pdfReportModal > div');
-    if (modalContent) {
-        modalContent.classList.remove('max-h-[90vh]', 'overflow-y-auto');
-    }
-
-    window.print();
-
-    // Restaura as classes do modal após fechar a janela de impressão
-    setTimeout(() => {
-        if (modalContent) {
-            modalContent.classList.add('max-h-[90vh]', 'overflow-y-auto');
+            window.print();
         }
-    }, 500);
-}
     </script>
 </body>
 </html>
